@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import axios from "axios";
 import { toast } from 'react-toastify';
-axios.defaults.baseURL = "https://medibook-p82u.onrender.com";
+//axios.defaults.baseURL = "https://medibook-p82u.onrender.com";
 const BADGE = {
   pending:   { bg: '#fff8e1', color: '#f57f17' },
   confirmed: { bg: '#e8f5e9', color: '#2e7d32' },
