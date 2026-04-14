@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import axios from "../api";
+import axios from "axios";
 import { toast } from 'react-toastify';
 axios.defaults.baseURL = "https://medibook-p82u.onrender.com";
 const STATUS = {
