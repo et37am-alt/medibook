@@ -1,7 +1,10 @@
 import React, { createContext, useContext, useState, useEffect } from 'react';
-import axios from "../api";
+import axios from "axios";
 
-axios.defaults.baseURL = process.env.REACT_APP_API_URL;
+// ✅ ADD THIS LINE (ONLY ONCE)
+axios.defaults.baseURL = "https://medibook-p82u.onrender.com";
+
+
 
 const AuthContext = createContext();
 
