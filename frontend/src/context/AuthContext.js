@@ -1,10 +1,8 @@
 import React, { createContext, useContext, useState, useEffect } from 'react';
-import axios from "axios";
+import axios from 'axios';
 
-// ✅ ADD THIS LINE (ONLY ONCE)
-axios.defaults.baseURL = "https://medibook-p82u.onrender.com";
-
-
+// Set axios base URL — in production this points to Render backend
+axios.defaults.baseURL = process.env.REACT_APP_API_URL;
 
 const AuthContext = createContext();
 
