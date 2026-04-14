@@ -1,8 +1,6 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
-import axios from "axios";
-
-axios.defaults.baseURL = "https://medibook-p82u.onrender.com";
+import axios from "../api";
 const features = [
   { icon: '🔍', title: 'Find Doctors',    desc: 'Search by specialization and availability' },
   { icon: '📅', title: 'Book Instantly',  desc: 'Choose your date and time slot in seconds' },
