@@ -3,7 +3,7 @@ import { Link, useNavigate } from 'react-router-dom';
 import { toast } from 'react-toastify';
 import { useAuth } from '../context/AuthContext';
 import axios from "axios";
-axios.defaults.baseURL = "https://medibook-p82u.onrender.com";
+//axios.defaults.baseURL = "https://medibook-p82u.onrender.com";
 const Login = () => {
   const [form, setForm]       = useState({ email: '', password: '' });
   const [loading, setLoading] = useState(false);
