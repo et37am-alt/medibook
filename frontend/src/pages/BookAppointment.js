@@ -4,7 +4,7 @@ import DatePicker from 'react-datepicker';
 import axios from "axios";
 import { toast } from 'react-toastify';
 
-axios.defaults.baseURL = "https://medibook-p82u.onrender.com";
+//axios.defaults.baseURL = "https://medibook-p82u.onrender.com";
 const BookAppointment = () => {
   const { doctorId } = useParams();
   const navigate     = useNavigate();
