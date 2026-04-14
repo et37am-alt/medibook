@@ -2,7 +2,9 @@ import React, { useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { toast } from 'react-toastify';
 import { useAuth } from '../context/AuthContext';
+import axios from "axios";
 
+axios.defaults.baseURL = "https://medibook-p82u.onrender.com";
 const fields = [
   { name: 'name',     label: 'Full Name',     type: 'text',     placeholder: 'John Doe' },
   { name: 'email',    label: 'Email Address', type: 'email',    placeholder: 'you@example.com' },
