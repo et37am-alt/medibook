@@ -13,9 +13,7 @@ import Doctors         from './pages/Doctors';
 import BookAppointment from './pages/BookAppointment';
 import MyAppointments  from './pages/MyAppointments';
 import AdminDashboard  from './pages/AdminDashboard';
-import axios from "axios";
-
-axios.defaults.baseURL = "https://medibook-p82u.onrender.com";
+import axios from "../api";
 // Redirect to login if not logged in
 const ProtectedRoute = ({ children }) => {
   const { user, loading } = useAuth();
