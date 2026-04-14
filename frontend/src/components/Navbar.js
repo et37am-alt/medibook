@@ -1,80 +1,65 @@
-import React, { useState } from 'react';
-import { Link, useNavigate, useLocation } from 'react-router-dom';
-import { useAuth } from '../context/AuthContext';
+import React, { createContext, useContext, useState, useEffect } from 'react';
+import axios from 'axios';
 
-const Navbar = () => {
-  const { user, logout } = useAuth();
-  const navigate = useNavigate();
-  const location = useLocation();
-  const [menuOpen, setMenuOpen] = useState(false);
+// Set axios base URL — in production this points to Render backend
+axios.defaults.baseURL = process.env.REACT_APP_API_URL;
 
-  const handleLogout = () => {
-    logout();
-    navigate('/login');
-    setMenuOpen(false);
+const AuthContext = createContext();
+
+export const AuthProvider = ({ children }) => {
+  const [user, setUser]       = useState(null);
+  const [token, setToken]     = useState(localStorage.getItem('token') || null);
+  const [loading, setLoading] = useState(true);
+
+  useEffect(() => {
+    if (token) {
+      axios.defaults.headers.common['Authorization'] = `Bearer ${token}`;
+      fetchCurrentUser();
+    } else {
+      delete axios.defaults.headers.common['Authorization'];
+      setUser(null);
+      setLoading(false);
+    }
+  }, [token]);
+
+  const fetchCurrentUser = async () => {
+    try {
+      const { data } = await axios.get('/api/auth/me');
+      setUser(data.user);
+    } catch {
+      logout();
+    } finally {
+      setLoading(false);
+    }
   };
 
-  const isActive = (path) => location.pathname === path;
+  const login = async (email, password) => {
+    const { data } = await axios.post('/api/auth/login', { email, password });
+    localStorage.setItem('token', data.token);
+    setToken(data.token);
+    setUser(data.user);
+    return data;
+  };
+
+  const register = async (formData) => {
+    const { data } = await axios.post('/api/auth/register', formData);
+    localStorage.setItem('token', data.token);
+    setToken(data.token);
+    setUser(data.user);
+    return data;
+  };
+
+  const logout = () => {
+    localStorage.removeItem('token');
+    setToken(null);
+    setUser(null);
+  };
 
   return (
-    <nav style={styles.nav}>
-      <Link to="/" style={styles.brand}>🏥 MediBook</Link>
-
-      {/* Desktop links */}
-      <div style={styles.links}>
-        <Link to="/doctors" style={{ ...styles.link, ...(isActive('/doctors') ? styles.activeLink : {}) }}>
-          Doctors
-        </Link>
-
-        {user ? (
-          <>
-            <Link to="/appointments" style={{ ...styles.link, ...(isActive('/appointments') ? styles.activeLink : {}) }}>
-              My Appointments
-            </Link>
-            {user.role === 'admin' && (
-              <Link to="/admin" style={{ ...styles.link, ...(isActive('/admin') ? styles.activeLink : {}) }}>
-                Admin
-              </Link>
-            )}
-            <span style={styles.userName}>Hi, {user.name.split(' ')[0]} 👋</span>
-            <button onClick={handleLogout} style={styles.logoutBtn}>Logout</button>
-          </>
-        ) : (
-          <>
-            <Link to="/login"    style={{ ...styles.link, ...(isActive('/login') ? styles.activeLink : {}) }}>Login</Link>
-            <Link to="/register" style={styles.registerBtn}>Register</Link>
-          </>
-        )}
-      </div>
-    </nav>
+    <AuthContext.Provider value={{ user, token, loading, login, register, logout }}>
+      {children}
+    </AuthContext.Provider>
   );
 };
 
-const styles = {
-  nav: {
-    display: 'flex', justifyContent: 'space-between', alignItems: 'center',
-    padding: '0 40px', height: '64px', background: '#1a73e8',
-    boxShadow: '0 2px 8px rgba(0,0,0,0.15)', position: 'sticky', top: 0, zIndex: 100,
-  },
-  brand: {
-    fontSize: '1.4rem', fontWeight: 700, color: '#fff', textDecoration: 'none', letterSpacing: '-0.5px',
-  },
-  links: { display: 'flex', alignItems: 'center', gap: '8px' },
-  link: {
-    color: 'rgba(255,255,255,0.88)', textDecoration: 'none', fontSize: '0.95rem',
-    padding: '6px 12px', borderRadius: '6px', transition: 'background 0.2s',
-  },
-  activeLink: { background: 'rgba(255,255,255,0.2)', color: '#fff' },
-  userName: { color: '#d0e8ff', fontSize: '0.9rem', padding: '0 8px' },
-  logoutBtn: {
-    background: 'rgba(255,255,255,0.15)', color: '#fff',
-    border: '1px solid rgba(255,255,255,0.35)', padding: '7px 16px',
-    borderRadius: '6px', cursor: 'pointer', fontSize: '0.9rem', fontWeight: 500,
-  },
-  registerBtn: {
-    background: '#fff', color: '#1a73e8', padding: '7px 16px',
-    borderRadius: '6px', fontWeight: 700, textDecoration: 'none', fontSize: '0.9rem',
-  },
-};
-
-export default Navbar;
+export const useAuth = () => useContext(AuthContext);
