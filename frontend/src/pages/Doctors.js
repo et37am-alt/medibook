@@ -3,6 +3,7 @@ import { Link, useSearchParams } from 'react-router-dom';
 import axios from 'axios';
 import { toast } from 'react-toastify';
 
+axios.defaults.baseURL = "https://medibook-p82u.onrender.com";
 const SPECIALIZATIONS = [
   'All', 'Cardiologist', 'Dermatologist', 'General Physician', 'Neurologist',
   'Orthopedic', 'Pediatrician', 'Psychiatrist', 'ENT', 'Gynecologist', 'Dentist',
