@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
 import DatePicker from 'react-datepicker';
-import axios from 'axios';
+import axios from "../api";
 import { toast } from 'react-toastify';
 
 axios.defaults.baseURL = "https://medibook-p82u.onrender.com";
