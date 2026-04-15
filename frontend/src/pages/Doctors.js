@@ -8,7 +8,7 @@ const SPECIALIZATIONS = [
   'Orthopedic','Pediatrician','Psychiatrist','ENT','Gynecologist','Dentist',
 ];
 
-import API from '../utils/config';
+const API = process.env.REACT_APP_API_URL;
 
 const DoctorCard = ({ doc }) => {
   const photoUrl = doc.photo
