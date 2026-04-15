@@ -4,7 +4,7 @@ import DatePicker from 'react-datepicker';
 import axios from 'axios';
 import { toast } from 'react-toastify';
 
-import API from '../utils/config';
+const API = process.env.REACT_APP_API_URL;
 
 const BookAppointment = () => {
   const { doctorId } = useParams();
